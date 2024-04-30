@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Steam Profile</title>
+    <style>
+
+        body {
+            background-color: #1B2838; /* Цвет фона для всей страницы */
+            font-family: Arial, sans-serif; /* Установка шрифта */
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2, ul {
+            text-align: center;
+            color: #ffffff; /* Цвет текста */
+            margin-top: 20px;
+        }
+
+        h1 {
+            background-color: #000F18; /* Цвет фона заголовка */
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            max-width: 200px; /* Максимальная ширина изображения */
+            max-height: 150px; /* Максимальная высота изображения */
+            border: 4px solid black; /* Рамка черного цвета толщиной 4 пикселя */
+            border-radius: 8px; /* Закругление углов */
+        }
+
+        ul {
+            list-style-type: none; /* Удаление маркера списка */
+            padding: 0;
+        }
+
+        li {
+            background-color: #0C1624; /* Цвет фона элемента списка */
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px; /* Закругление углов */
+        }
+
+    </style>
+</head>
+<body>
+<h1>Welcome, <span th:text="${personaname}"></span>!</h1>
+<div class="image-container">
+    <img th:src="${avatarfull}" alt="Avatar">
+</div>
+
+<h2>Recently Played Games:</h2>
+<ul>
+    <li th:each="game : ${recentGames}">
+        <span th:text="${game.name}"></span> - <span th:text="${game.playtime2Weeks}"></span> minutes
+    </li>
+</ul>
+</body>
+</html>
