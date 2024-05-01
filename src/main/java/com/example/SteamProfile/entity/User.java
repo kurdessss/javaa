@@ -22,12 +22,14 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "user_game",
+            name = "user_game", // Имя таблицы для хранения связей пользователей и игр
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "game_id")
     )
     private List<Game> games;
 
     @ManyToOne
+    @JoinColumn(name = "location_id")
     private Location location;
+
 }

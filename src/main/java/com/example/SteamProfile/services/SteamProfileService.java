@@ -37,6 +37,12 @@ public class SteamProfileService {
         this.userRepository = userRepository;
     }
 
+    @Autowired
+    public void setGameRepository(GameRepository gameRepository) {
+        this.gameRepository = gameRepository;
+    }
+
+
     public SteamProfileService(ServiceApiKey serviceApiKey) {
         this.serviceApiKey = serviceApiKey;
     }

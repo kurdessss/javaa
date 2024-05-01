@@ -14,16 +14,15 @@ import java.util.List;
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
+    private Long id;
     private String name;
     private int playTimeMinutes;
 
     @ManyToMany(mappedBy = "games", cascade = CascadeType.ALL)
     private List<User> users;
 
-    @ManyToOne(optional = false)
-    private User user;
+
 }
 
 
