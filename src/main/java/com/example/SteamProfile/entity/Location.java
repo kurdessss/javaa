@@ -13,10 +13,6 @@ import java.util.List;
 @Builder
 public class Location {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column
     private String location;
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)

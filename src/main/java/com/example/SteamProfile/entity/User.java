@@ -1,6 +1,5 @@
 package com.example.SteamProfile.entity;
 
-import com.example.SteamProfile.entity.Game;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;

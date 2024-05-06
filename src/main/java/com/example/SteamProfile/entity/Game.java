@@ -21,8 +21,6 @@ public class Game {
 
     @ManyToMany(mappedBy = "games", cascade = CascadeType.ALL)
     private List<User> users;
-
-
 }
 
 

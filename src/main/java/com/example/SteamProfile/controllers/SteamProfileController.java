@@ -4,15 +4,19 @@ import com.example.SteamProfile.entity.Game;
 import com.example.SteamProfile.entity.Location;
 import com.example.SteamProfile.models.GameInfo;
 import com.example.SteamProfile.repository.GameRepository;
+import com.example.SteamProfile.repository.LocationRepository;
 import com.example.SteamProfile.repository.UserRepository;
 import com.example.SteamProfile.services.SteamProfileService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import com.example.SteamProfile.cache.GameCache;
 
 @Slf4j
 @AllArgsConstructor
@@ -20,9 +24,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/steam")
 public class SteamProfileController {
+    @Autowired
+    private GameCache gameCache;
     private final UserRepository userRepository;
     private final GameRepository gameRepository;
     private final SteamProfileService steamProfileService;
+    private final LocationRepository locationRepository;
 
     // Другие методы контроллера
 
@@ -44,6 +51,18 @@ public class SteamProfileController {
         return ResponseEntity.ok(steamProfileService.deleteUser(steamId));
     }
 
+    @GetMapping("/game/time")
+    public ResponseEntity<?> getWithParams(@RequestParam(name = "minPlayTime", required = true) int minPlayTime) {
+        List<Game> games = steamProfileService.getAllGames();
+        List<Game> filteredGames = games.stream()
+                .filter(game -> game.getPlayTimeMinutes() > minPlayTime)
+                .collect(Collectors.toList());
+        if (!filteredGames.isEmpty()) {
+            return ResponseEntity.ok(filteredGames);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
     // Создание новой игры
     @PostMapping("/game")
     public ResponseEntity<String> createGame(@RequestBody GameInfo gameInfo) {
@@ -51,6 +70,7 @@ public class SteamProfileController {
         game.setName(gameInfo.getName());
         game.setPlayTimeMinutes(gameInfo.getPlayTimeMinutes());
         gameRepository.save(game);
+        gameCache.addToCache(game);
         return ResponseEntity.ok("Game created");
     }
 
