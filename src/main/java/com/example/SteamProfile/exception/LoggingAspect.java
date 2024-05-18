@@ -13,12 +13,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoggingAspect {
 
-    private final Logger logger;
-
-    @Autowired
-    public LoggingAspect(Logger logger) {
-        this.logger = logger;
-    }
+    @SuppressWarnings("checkstyle:ConstantName")
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(LoggingAspect.class);
 
     @Before("execution(* com.example.SteamProfile.services.*.*(..))")
     public void logBefore(JoinPoint joinPoint) {
