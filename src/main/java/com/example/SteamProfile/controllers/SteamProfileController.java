@@ -2,6 +2,7 @@ package com.example.SteamProfile.controllers;
 
 import com.example.SteamProfile.entity.Game;
 import com.example.SteamProfile.entity.Location;
+import com.example.SteamProfile.entity.User;
 import com.example.SteamProfile.models.GameInfo;
 import com.example.SteamProfile.repository.GameRepository;
 import com.example.SteamProfile.repository.LocationRepository;
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -34,9 +36,9 @@ public class SteamProfileController {
     // Другие методы контроллера
 
     // Создание нового пользователя
-        @PostMapping("/user")
-        public ResponseEntity<String> createUser(@RequestParam String steamId) {
-            return ResponseEntity.ok(steamProfileService.inputUser(steamId));
+    @PostMapping("/user")
+    public ResponseEntity<String> createUser(@RequestParam String steamId) {
+        return ResponseEntity.ok(steamProfileService.inputUser(steamId));
     }
 
     // Обновление информации о пользователе
@@ -64,6 +66,7 @@ public class SteamProfileController {
         }
     }
     // Создание новой игры
+
     @PostMapping("/game")
     public ResponseEntity<String> createGame(@RequestBody GameInfo gameInfo) {
         Game game = new Game();
@@ -132,5 +135,11 @@ public class SteamProfileController {
     public ResponseEntity<String> deleteLocation(@PathVariable Long id) {
         steamProfileService.deleteLocation(id);
         return ResponseEntity.ok("Location deleted");
+    }
+
+    @PostMapping("/users/bulk-create")
+    public ResponseEntity<List<User>> bulkCreateUsers(@RequestBody List<User> users) {
+        List<User> createdUsers = steamProfileService.bulkCreateUsers(users);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUsers);
     }
 }
