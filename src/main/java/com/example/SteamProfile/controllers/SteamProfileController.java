@@ -67,15 +67,21 @@ public class SteamProfileController {
     }
     // Создание новой игры
 
+    @Autowired
     @PostMapping("/game")
     public ResponseEntity<String> createGame(@RequestBody GameInfo gameInfo) {
         Game game = new Game();
         game.setName(gameInfo.getName());
         game.setPlayTimeMinutes(gameInfo.getPlayTimeMinutes());
         gameRepository.save(game);
-        gameCache.addToCache(game);
+        if (gameCache != null) {
+            gameCache.addToCache(game);
+        } else {
+// Логирование ошибки или другие действия, если gameCache не инициализирован
+        }
         return ResponseEntity.ok("Game created");
     }
+
 
     // Обновление информации о игре
     @PutMapping("/game/{id}")
@@ -84,12 +90,14 @@ public class SteamProfileController {
         if (optionalGame.isPresent()) {
             Game game = optionalGame.get();
             game.setName(gameInfo.getName());
-            gameRepository.save(game);
+            game.setPlayTimeMinutes(gameInfo.getPlayTimeMinutes());
+            Game updatedGame = gameRepository.save(game); // Сохраняем обновленную игру
             return ResponseEntity.ok("Game updated");
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+
 
     // Удаление игры
     @DeleteMapping("/game/{id}")
@@ -102,6 +110,7 @@ public class SteamProfileController {
             return ResponseEntity.notFound().build();
         }
     }
+
 
     // Создание нового местоположения
     @PostMapping("/location")

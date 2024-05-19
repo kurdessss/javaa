@@ -166,14 +166,22 @@ public class SteamProfileService {
             Game game = optionalGame.get();
             game.setName(newName);
             game.setPlayTimeMinutes(newPlayTimeMinutes);
-            return gameRepository.save(game);
+            Game updatedGame = gameRepository.save(game); // Сохраняем обновленную игру
+            return updatedGame;
         } else {
             throw new RuntimeException("Игра с указанным идентификатором не найдена");
         }
     }
 
-    public void deleteGame(Long id) {
-        gameRepository.deleteById(id);
+    public void deleteGame(Long gameId) {
+        // Проверяем, существует ли игра с указанным gameId
+        if (gameRepository.existsById(gameId)) {
+            // Если игра существует, удаляем ее
+            gameRepository.deleteById(gameId);
+        } else {
+            // Если игра не существует, выбрасываем исключение
+            throw new RuntimeException("Game not found");
+        }
     }
     public List<User> bulkCreateUsers(List<User> users) {
         return users.stream()

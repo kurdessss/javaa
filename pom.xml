@@ -14,12 +14,7 @@
 	<name>SteamProfile</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<version.swagger>2.3.0</version.swagger>
-		<java.version>17</java.version>
-		<sonar.organization>kurdessss_java</sonar.organization>
-		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<version.junit>5.10.0</version.junit>
-		<version.mock>2.24.0</version.mock>
+		<sonar.coverage.jacoco.xmlReportPaths>../app-it/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<java.version>17</java.version>
 	</properties>
 
