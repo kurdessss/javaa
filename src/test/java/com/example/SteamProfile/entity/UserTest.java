@@ -2,9 +2,6 @@ package com.example.SteamProfile.entity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.example.SteamProfile.entity.Game;
-import com.example.SteamProfile.entity.Location;
-import com.example.SteamProfile.entity.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -20,8 +17,8 @@ public class UserTest {
 
         assertNull(user.getId());
         assertEquals(username, user.getUsername());
-        assertNull(user.getAvatar());
-        assertEquals(0, user.getStateDate());
+        assertNull(user.getAvatarUrl());
+        assertEquals(0, user.getCreateDate());
         assertNull(user.getGames());
         assertNull(user.getLocation());
     }

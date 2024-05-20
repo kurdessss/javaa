@@ -43,7 +43,6 @@ public class SteamProfileService {
         this.gameRepository = gameRepository;
     }
 
-
     public SteamProfileService(ServiceApiKey serviceApiKey) {
         this.serviceApiKey = serviceApiKey;
     }
@@ -62,34 +61,45 @@ public class SteamProfileService {
         Player[] players = responseData.getPlayers();
         String username = players[0].getPersonaName();
         String avatar = players[0].getAvatarFull();
+
+        // Find existing user by username
         User user = userRepository.findByUsername(username);
-        Location location = new Location();
-        location.setLocation(players[0].getLocCountryCode());
-        locationRepository.save(location);
+
+        // Retrieve or create location
+        String countryCode = players[0].getLocCountryCode();
+        Location location = locationRepository.findByLocation(countryCode);
+        if (location == null) {
+            location = new Location();
+            location.setLocation(countryCode);
+            locationRepository.save(location);
+        }
+
+        // Check if user already exists
         if (user != null) {
             return String.format("User %s already exists", username);
         } else {
             User newUser = new User();
             newUser.setUsername(username);
-            newUser.setAvatar(avatar);
+            newUser.setAvatarUrl(avatar);
             newUser.setLocation(location);
             userRepository.save(newUser);
             return String.format("User %s created", username);
         }
     }
 
-    public String updateUser(String steamId) {
+    public String updateUser(String steamId, String newAvatar) {
         AllInfo mainResponse = serviceApiKey.doRequestAPI(steamId);
         SteamResponse steamResponse = mainResponse.getSteamResponse();
         ResponseData responseData = steamResponse.getResponse();
         Player[] players = responseData.getPlayers();
         String username = players[0].getPersonaName();
-        String avatar = players[0].getAvatarFull();
-
         User existingUser = userRepository.findByUsername(username);
         if (existingUser != null) {
-            existingUser.setAvatar(avatar);
-            userRepository.save(existingUser);
+            existingUser.setAvatarUrl(newAvatar);
+            existingUser.setUsername(username);
+            //existingUser.setCreateDate(statedate); // Обновление других полей пользователя, если необходимо
+            System.out.println(existingUser.getAvatarUrl());
+            userRepository.save(existingUser); // Сохранение обновленного пользователя в базе данных
             return String.format("User %s updated", username);
         } else {
             return String.format("User %s does not exist", username);
@@ -102,7 +112,6 @@ public class SteamProfileService {
         ResponseData responseData = steamResponse.getResponse();
         Player[] players = responseData.getPlayers();
         String username = players[0].getPersonaName();
-
         User existingUser = userRepository.findByUsername(username);
         if (existingUser != null) {
             userRepository.delete(existingUser);
@@ -183,6 +192,7 @@ public class SteamProfileService {
             throw new RuntimeException("Game not found");
         }
     }
+
     public List<User> bulkCreateUsers(List<User> users) {
         return users.stream()
                 .map(userRepository::save)

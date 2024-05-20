@@ -1,9 +1,9 @@
 package com.example.SteamProfile.controllers;
-
 import com.example.SteamProfile.entity.Game;
 import com.example.SteamProfile.entity.Location;
 import com.example.SteamProfile.entity.User;
 import com.example.SteamProfile.models.GameInfo;
+import com.example.SteamProfile.models.UpdateInfo;
 import com.example.SteamProfile.repository.GameRepository;
 import com.example.SteamProfile.repository.LocationRepository;
 import com.example.SteamProfile.repository.UserRepository;
@@ -41,15 +41,23 @@ public class SteamProfileController {
         return ResponseEntity.ok(steamProfileService.inputUser(steamId));
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return ResponseEntity.ok(users);
+    }
+
     // Обновление информации о пользователе
     @PutMapping("/user/{steamId}")
-    public ResponseEntity<String> updateUser(@PathVariable String steamId) {
-        return ResponseEntity.ok(steamProfileService.updateUser(steamId));
+    public ResponseEntity<String> updateUser(@PathVariable String steamId, @RequestBody UpdateInfo updateInfo) {
+        String avatar = updateInfo.getAvatarUrl();
+        return ResponseEntity.ok(steamProfileService.updateUser(steamId, avatar));
     }
 
     // Удаление пользователя
     @DeleteMapping("/user/{steamId}")
     public ResponseEntity<String> deleteUser(@PathVariable String steamId) {
+
         return ResponseEntity.ok(steamProfileService.deleteUser(steamId));
     }
 
@@ -67,7 +75,6 @@ public class SteamProfileController {
     }
     // Создание новой игры
 
-    @Autowired
     @PostMapping("/game")
     public ResponseEntity<String> createGame(@RequestBody GameInfo gameInfo) {
         Game game = new Game();
@@ -81,7 +88,6 @@ public class SteamProfileController {
         }
         return ResponseEntity.ok("Game created");
     }
-
 
     // Обновление информации о игре
     @PutMapping("/game/{id}")
@@ -97,7 +103,6 @@ public class SteamProfileController {
             return ResponseEntity.notFound().build();
         }
     }
-
 
     // Удаление игры
     @DeleteMapping("/game/{id}")

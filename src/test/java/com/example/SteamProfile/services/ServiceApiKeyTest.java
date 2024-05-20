@@ -3,13 +3,11 @@ package com.example.SteamProfile.services;
 import com.example.SteamProfile.models.AllInfo;
 import com.example.SteamProfile.models.SteamGames;
 import com.example.SteamProfile.models.SteamResponse;
-import com.example.SteamProfile.services.ServiceApiKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

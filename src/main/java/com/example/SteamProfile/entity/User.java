@@ -16,12 +16,12 @@ public class User {
     private Long id;
 
     private String username;
-    private String avatar;
-    private int stateDate;
+    private String avatarUrl;
+    private int createDate;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "user_game", // Имя таблицы для хранения связей пользователей и игр
+            name = "user_game",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "game_id")
     )
@@ -30,5 +30,4 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
-
 }

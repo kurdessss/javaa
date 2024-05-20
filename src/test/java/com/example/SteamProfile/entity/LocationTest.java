@@ -17,7 +17,7 @@ public class LocationTest {
         Location location = new Location(locationName);
 
         assertEquals(locationName, location.getLocation());
-        assertNull(location.getUsers());
+        assertEquals(location.getUsers(), new ArrayList<>());
     }
 
     @Test

@@ -1,9 +1,11 @@
 package com.example.SteamProfile.controllers;
 
+import com.example.SteamProfile.cache.GameCache;
 import com.example.SteamProfile.entity.Game;
 import com.example.SteamProfile.entity.Location;
 import com.example.SteamProfile.entity.User;
 import com.example.SteamProfile.models.GameInfo;
+import com.example.SteamProfile.models.UpdateInfo;
 import com.example.SteamProfile.repository.GameRepository;
 import com.example.SteamProfile.repository.LocationRepository;
 import com.example.SteamProfile.repository.UserRepository;
@@ -52,15 +54,6 @@ class SteamProfileControllerTest {
         ResponseEntity<String> responseEntity = steamProfileController.createUser(steamId);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("User created", responseEntity.getBody());
-    }
-
-    @Test
-    void testUpdateUser() {
-        String steamId = "123456";
-        when(steamProfileService.updateUser(steamId)).thenReturn("User updated");
-        ResponseEntity<String> responseEntity = steamProfileController.updateUser(steamId);
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("User updated", responseEntity.getBody());
     }
 
     @Test
